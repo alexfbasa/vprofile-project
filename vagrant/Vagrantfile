@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# # vi: set ft=ruby :
+
+# Specify minimum Vagrant version and Vagrant API version
+Vagrant.require_version ">= 1.6.0"
+VAGRANTFILE_API_VERSION = "2"
+
+# Require YAML module
+require 'yaml'
+
+# Read YAML file with box details
+servers = YAML.load_file('servers.yaml')
+
+# Create boxes
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_host = true
+
+    servers.each do |server|
+        config.vm.define server["name"] do |srv|
+            srv.vm.box = server["box"]
+            srv.vm.network "private_network", ip: server["ip"]
+            srv.vm.hostname = server["hostname"]
+
+            srv.vm.provider :virtualbox do |vb|
+                vb.name = server["name"]
+                vb.memory = server["ram"]
+            end
+
+            if server["box"] =~ /centos/
+                srv.vm.provision "shell", inline: <<-SHELL
+                    echo "Building #{server['name']}.."
+                    echo "Installing epel.."
+                    sudo yum -y install epel-release >/dev/null 2>&1
+                    echo "Updating yum.."
+                    sudo yum -y update >/dev/null 2>&1
+                    echo "Installing go vim git wget unzip..."
+                    sudo yum -y install go vim git wget unzip net-tools >/dev/null 2>&1
+                SHELL
+            elsif server["box"] =~ /ubuntu/
+                srv.vm.provision "shell", inline: <<-SHELL
+                    echo "Building #{server['name']}.."
+                    echo "Running apt update.."
+                    sudo apt-get update -y >/dev/null 2>&1
+                    echo "Installing go vim git wget unzip..."
+                    sudo apt-get -y install go vim git wget unzip net-tools >/dev/null 2>&1
+                SHELL
+            end
+        end
+    end
+end
