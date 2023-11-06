@@ -1,5 +1,5 @@
-# adding repository and installing nginx		
-apt update
+#!/bin/bash
+# adding repository and installing nginx
 apt install nginx -y
 cat <<EOT > vproapp
 upstream vproapp {

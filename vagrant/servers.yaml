@@ -12,7 +12,7 @@
   job: memcache
   ram: 600
 - name: rmq01
-  box: centos/7
+  box: eurolinux-vagrant/centos-stream-9
   hostname: "rmq01"
   ip: 172.17.8.151
   job: rabbitmq
@@ -30,3 +30,27 @@
   job: nginx
   ram: 800
 
+#- name: postgres
+#  box: centos/7
+#  hostname: "postgres.dev"
+#  ip: 172.17.8.100
+#  job: postgres
+#  ram: 2048
+#- name: pgbackrestq
+#  box: centos/7
+#  hostname: "pgbackrest.dev"
+#  ip: 172.17.8.101
+#  job: pgbackrest
+#  ram: 2048
+#- name: prometheus
+#  box: centos/7
+#  hostname: "prometheus.dev"
+#  ip: 172.17.8.102
+#  job: prometheus
+#  ram: 2048
+#- name: grafana
+#  box: centos/7
+#  hostname: "grafana.dev"
+#  ip: 172.17.8.103
+#  job: grafana
+#  ram: 2048

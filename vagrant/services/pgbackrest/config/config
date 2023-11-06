@@ -1,0 +1,6 @@
+Host postgres.dev
+  IdentityFile ~/.ssh/backrest
+  Port 22
+  User postgres
+  Hostname postgres.dev
+  StrictHostKeyChecking=no

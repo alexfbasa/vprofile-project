@@ -27,7 +27,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 vb.memory = server["ram"]
             end
 
-            if server["box"] =~ /centos/
+            script_name = "#{server['job']}.sh"
+
+            if server["box"].include?("centos")
+                srv.vm.provision "file", source: script_name, destination: "/tmp/#{server['job']}.sh"
+
                 srv.vm.provision "shell", inline: <<-SHELL
                     echo "Building #{server['name']}.."
                     echo "Installing epel.."
@@ -35,16 +39,48 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                     echo "Updating yum.."
                     sudo yum -y update >/dev/null 2>&1
                     echo "Installing go vim git wget unzip..."
-                    sudo yum -y install go vim git wget unzip net-tools >/dev/null 2>&1
+                    sudo yum -y install go vim git wget unzip zip dnf net-tools >/dev/null 2>&1
+
+                    # Execute the copied script
+                    if [ -f "/tmp/#{server['job']}.sh" ]; then
+                        sudo sh "/tmp/#{server['job']}.sh"
+                    else
+                        echo "Script '/tmp/#{server['job']}.sh' not found on the virtual machine."
+                    fi
                 SHELL
-            elsif server["box"] =~ /ubuntu/
+            elsif server["box"].include?("ubuntu")
+                srv.vm.provision "file", source: script_name, destination: "/tmp/#{server['job']}.sh"
                 srv.vm.provision "shell", inline: <<-SHELL
                     echo "Building #{server['name']}.."
                     echo "Running apt update.."
                     sudo apt-get update -y >/dev/null 2>&1
                     echo "Installing go vim git wget unzip..."
                     sudo apt-get -y install go vim git wget unzip net-tools >/dev/null 2>&1
+                    # Execute the copied script
+                    if [ -f "/tmp/#{server['job']}.sh" ]; then
+                        sudo sh "/tmp/#{server['job']}.sh"
+                    else
+                        echo "Script '/tmp/#{server['job']}.sh' not found on the virtual machine."
+                    fi
                 SHELL
+
+            Dir["services/#{servers['job']}/*"].each do |fname|
+                srv.vm.provision :file do |file|
+                    file.source = fname
+                    file.destination = "/tmp/#{servers['job']}/" + File.basename(fname)
+                end
+            end
+
+            Dir["services/common/*"].each do |fname|
+                srv.vm.provision :file do |file|
+                    file.source = fname
+                    file.destination = "/tmp/common/" + File.basename(fname)
+                end
+            end
+            srv.vm.provision "shell", inline: <<-SHELL
+                echo "Running bootstrap.."
+                sudo "/tmp/#{servers['job']}/scripts/bootstrap.sh"
+            SHELL
             end
         end
     end

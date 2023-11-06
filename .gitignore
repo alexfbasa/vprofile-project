@@ -1,1 +1,11 @@
 .idea
+
+
+
+### SSH Keys ###
+/vagrant/services/pgbackrest/config/authorized_keys
+/vagrant/services/pgbackrest/config/backrest
+/vagrant/services/pgbackrest/config/backrest.pub
+/vagrant/services/postgres/config/authorized_keys
+/vagrant/services/postgres/config/postgres
+/vagrant/services/postgres/config/postgres.pub
