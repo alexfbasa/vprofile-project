@@ -19,11 +19,11 @@ scrape_configs:
     scrape_interval: 3s
     static_configs:
       - targets:
-        - "localhost:9100"
-        - "postgres.dev:9100"
-  
+          - "localhost:9100"
+          - "orc-postgres.dev:9100"
+
   - job_name: "pgsql"
     scrape_interval: 3s
     static_configs:
       - targets:
-        - "postgres.dev:9187"
+          - "orc-postgres.dev:9187"

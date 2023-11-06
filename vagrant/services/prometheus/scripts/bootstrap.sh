@@ -1,8 +1,7 @@
 #!/bin/bash
-
-PROMETHEUS='https://github.com/prometheus/prometheus/releases/download/v2.47.2/prometheus-2.47.2.darwin-arm64.tar.gz'
+PROMETHEUS='https://github.com/prometheus/prometheus/releases/download/v2.46.0/prometheus-2.46.0.linux-amd64.tar.gz'
 PROM_DIR='/var/lib/prometheus'
-PROM_SRC_DIR='/tmp/prometheus'
+PROM_TMP_SRC_DIR='/tmp/prometheus'
 COMMON_DIR='/tmp/common'
 
 if curl --output /dev/null --silent --head --fail "$PROMETHEUS"; then
@@ -25,12 +24,12 @@ then
     fi
 
     mv /tmp/prometheus-*/* ${PROM_DIR?}
-    cp ${PROM_SRC_DIR?}/config/prometheus.yml ${PROM_DIR?}
+    cp ${PROM_TMP_SRC_DIR?}/config/prometheus.yml ${PROM_DIR?}
 
     chown -R prometheus:prometheus ${PROM_DIR?}
     chmod 700 /var/lib/prometheus/
 
-    cp ${PROM_SRC_DIR?}/config/prometheus.service /usr/lib/systemd/system
+    cp ${PROM_TMP_SRC_DIR?}/config/prometheus.service /usr/lib/systemd/system
     chown root:root /usr/lib/systemd/system/prometheus.service
     chmod 644 /usr/lib/systemd/system/prometheus.service
 
