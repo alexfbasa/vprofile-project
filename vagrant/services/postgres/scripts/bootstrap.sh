@@ -52,7 +52,10 @@ systemctl start postgresql-15
 
 ${COMMON_DIR?}/scripts/node_exporter_install.sh
 
+echo "Running script to create_grafana_zabbix_db"
+echo "###########################################"
 ${PGSQL_SRC_DIR?}/scripts/create_grafana_zabbix_db.sh
+echo $?
 
 
 su - postgres -c \
