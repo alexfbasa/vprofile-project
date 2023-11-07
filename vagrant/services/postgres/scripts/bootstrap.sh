@@ -52,9 +52,7 @@ systemctl start postgresql-15
 
 ${COMMON_DIR?}/scripts/node_exporter_install.sh
 
-echo "Running script to create_grafana_zabbix_db"
-echo "###########################################"
-${PGSQL_SRC_DIR?}/scripts/create_grafana_zabbix_db.sh
+
 echo $?
 
 
@@ -62,5 +60,10 @@ su - postgres -c \
     "${BIN_DIR?}/psql -d postgres -f /tmp/postgres/scripts/statistics.sql"
 
 ${PGSQL_SRC_DIR?}/scripts/install_postgres_exporter.sh
+echo "Running script to create_grafana_zabbix_db"
+echo "###########################################"
+${PGSQL_SRC_DIR?}/scripts/create_grafana_zabbix_db.sh >/dev/null 2>&1
 
-exit 0
+if [ $? -ne 0 ]; then
+    echo "Script to create_grafana_zabbix_db was executed."
+fi
