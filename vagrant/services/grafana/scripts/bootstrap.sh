@@ -21,6 +21,7 @@ rpm -Uvh $ZABBIX_REPO
 dnf clean all
 dnf -y module switch-to php:7.4
 dnf -y install zabbix-server-pgsql zabbix-web-pgsql zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
+
 cp ${GRAF_TMP_SRC_DIR?}/config/zabbix_server.conf /etc/zabbix/zabbix_server.conf
 cp ${GRAF_TMP_SRC_DIR?}/config/zabbix.conf.php /etc/zabbix/web/zabbix.conf.php
 cp ${GRAF_TMP_SRC_DIR?}/config/zabbix.conf /etc/nginx/conf.d/zabbix.conf
@@ -36,8 +37,8 @@ systemctl enable grafana-server
 systemctl start grafana-server
 systemctl status grafana-server
 
-systtemctl stop zabbix-server zabbix-agent nginx php-fpm
+systemctl stop zabbix-server zabbix-agent nginx php-fpm
 systemctl enable zabbix-server zabbix-agent nginx php-fpm
-systemctl start zabbix-server zabbix-agent nginx php-fpm
+systemctl start zabbix-server zabbix-agent nginx php-fpm &
 
 exit 0

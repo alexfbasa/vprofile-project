@@ -62,8 +62,4 @@ su - postgres -c \
 ${PGSQL_SRC_DIR?}/scripts/install_postgres_exporter.sh
 echo "Running script to create_grafana_zabbix_db"
 echo "###########################################"
-${PGSQL_SRC_DIR?}/scripts/create_grafana_zabbix_db.sh >/dev/null 2>&1
-
-if [ $? -ne 0 ]; then
-    echo "Script to create_grafana_zabbix_db was executed."
-fi
+${PGSQL_SRC_DIR?}/scripts/create_grafana_zabbix_db.sh
