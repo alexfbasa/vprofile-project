@@ -23,12 +23,12 @@
   ip: 172.17.8.152
   job: tomcat
   ram: 800
-- name: web01
-  box: ubuntu/jammy64
-  hostname: "web01"
+- name: jenkins-nginx
+  box: centos/7
+  hostname: "jenkins-nginx"
   ip: 172.17.8.153
   job: nginx
-  ram: 800
+  ram: 2048
 
 - name: postgres
   box: centos/7
