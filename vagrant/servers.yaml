@@ -42,9 +42,9 @@
   ip: 172.17.8.101
   job: pgbackrest
   ram: 2048
-- name: prometheus
+- name: prometheus-nexus
   box: centos/7
-  hostname: "prometheus.dev"
+  hostname: "prometheus-nexus"
   ip: 172.17.8.102
   job: prometheus
   ram: 2048

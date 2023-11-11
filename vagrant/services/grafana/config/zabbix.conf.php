@@ -4,9 +4,9 @@
 $DB['TYPE']                             = 'POSTGRESQL';
 $DB['SERVER']                   = 'postgres';
 $DB['PORT']                             = '5432';
-$DB['DATABASE']                 = 'zabbix';
-$DB['USER']                             = 'zabbix';
-$DB['PASSWORD']                 = 'zabbix';
+$DB['DATABASE']                 = 'zabbix_db';
+$DB['USER']                             = 'zabbix_user';
+$DB['PASSWORD']                 = 'zbx_pas2k23sw0rd42';
 
 // Schema name. Used for PostgreSQL.
 $DB['SCHEMA']                   = '';

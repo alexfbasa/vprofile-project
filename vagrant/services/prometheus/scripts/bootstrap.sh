@@ -39,6 +39,9 @@ then
     systemctl status prometheus
 fi
 
+pwd
+sleep 10
+${PROM_TMP_SRC_DIR?}/scripts/nexus-setup.sh
 ${COMMON_DIR?}/scripts/node_exporter_install.sh
 
 exit 0

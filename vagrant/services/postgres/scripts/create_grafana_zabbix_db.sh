@@ -4,9 +4,9 @@ GRAFANA_USER="grafana_user"
 GRAFANA_PASSWORD="grn_pas7sw0rd30"
 GRAFANA_DB="grafana_db"
 
-ZABBIX_USER="zabbix"
-ZBX_PASSWORD="zabbix"
-ZABBIX_DB="zabbix"
+ZABBIX_USER="zabbix_user"
+ZBX_PASSWORD="zbx_pas2k23sw0rd42"
+ZABBIX_DB="zabbix_db"
 
 ZBX_DB_SCHEMA='https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.23.tar.gz'
 

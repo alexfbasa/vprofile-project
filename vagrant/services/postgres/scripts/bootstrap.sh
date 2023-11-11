@@ -63,3 +63,11 @@ ${PGSQL_SRC_DIR?}/scripts/install_postgres_exporter.sh
 echo "Running script to create_grafana_zabbix_db"
 echo "###########################################"
 ${PGSQL_SRC_DIR?}/scripts/create_grafana_zabbix_db.sh
+
+echo "Running script to create_sonarqube_db"
+echo "###########################################"
+${PGSQL_SRC_DIR?}/scripts/create_sonarqube_db.sh
+
+echo "Running script to create_sonarqube_db"
+echo "###########################################"
+${PGSQL_SRC_DIR?}/scripts/sonar-setup.sh

@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 vb.memory = server["ram"]
             end
 
-            script_name = "#{server['job']}.sh"
+            script_name = "services/scripts/#{server['job']}-setup.sh"
 
             if script_name && File.exist?(script_name)
                 srv.vm.provision "file", source: script_name, destination: "/tmp/#{server['job']}.sh"

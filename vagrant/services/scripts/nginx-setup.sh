@@ -9,8 +9,6 @@ install_docker() {
     sudo adduser jenkins
     sudo usermod -aG docker jenkins
     sudo systemctl start docker
-    sudo docker run hello-world
-    sudo chown root:docker /var/run/docker.sock
     local docker_gid=$(getent group docker | cut -d: -f3)
     if [[ $? -ne 0 ]]; then
         echo "Docker install failed"
@@ -28,11 +26,7 @@ install_docker() {
     fi
 }
 
-# Update the system
-sudo yum -y update
-
 # Install Nginx
-sudo yum -y install epel-release
 sudo yum -y install nginx
 
 # Start and enable Nginx
@@ -45,11 +39,18 @@ if ! command -v docker &> /dev/null; then
     install_docker
 fi
 
+# Wait for Docker to start
+sleep 10
+
+# Set permissions on /var/run/docker.sock
+sudo chown root:docker /var/run/docker.sock
+
 # Pull Jenkins Docker image
 sudo docker pull alexsimple/jenkins_jcasc:v4
 
 # Run Jenkins container on port 8080 with elevated privileges
-sudo docker run --name jenkins --rm -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v4
+sudo docker run --name jenkins --rm -d -p 8080:8080 -v jenkins_data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v4
+sudo chown -R nginx:nginx /var/lib/docker/volumes/jenkins_data
 
 # Configure Nginx as a reverse proxy for Jenkins
 sudo bash -c 'cat <<EOT > /etc/nginx/conf.d/jenkins.conf
