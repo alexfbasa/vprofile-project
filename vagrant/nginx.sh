@@ -6,14 +6,25 @@ install_docker() {
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     sudo usermod -aG docker "$(id -un)"
+    sudo adduser jenkins
+    sudo usermod -aG docker jenkins
     sudo systemctl start docker
     sudo docker run hello-world
-
+    sudo chown root:docker /var/run/docker.sock
+    local docker_gid=$(getent group docker | cut -d: -f3)
     if [[ $? -ne 0 ]]; then
         echo "Docker install failed"
         exit 1
     else
         echo "Docker installed successfully"
+    fi
+    if [[ $docker_gid -eq 991 ]]; then
+        echo "Docker group already has GID 991."
+    else
+        echo "Updating Docker group GID to 991..."
+        sudo groupmod -g 991 docker
+        sudo systemctl restart docker
+        echo "Docker group GID updated to 991."
     fi
 }
 
@@ -35,10 +46,10 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Pull Jenkins Docker image
-sudo docker pull jenkins/jenkins
+sudo docker pull alexsimple/jenkins_jcasc:v4
 
 # Run Jenkins container on port 8080 with elevated privileges
-sudo docker run --name jenkins --rm -d -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v1
+sudo docker run --name jenkins --rm -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v4
 
 # Configure Nginx as a reverse proxy for Jenkins
 sudo bash -c 'cat <<EOT > /etc/nginx/conf.d/jenkins.conf
