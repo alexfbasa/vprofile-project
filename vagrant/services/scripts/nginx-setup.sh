@@ -49,8 +49,12 @@ sudo chown root:docker /var/run/docker.sock
 sudo docker pull alexsimple/jenkins_jcasc:v4
 
 # Run Jenkins container on port 8080 with elevated privileges
-sudo docker run --name jenkins --rm -d -p 8080:8080 -v jenkins_data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v4
-sudo chown -R nginx:nginx /var/lib/docker/volumes/jenkins_data
+#sudo docker run --name jenkins --rm -d -p 8080:8080 -v jenkins_data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v4
+su - jenkins
+docker run --name jenkins --rm -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD='P@ssword2#J&N1ks' alexsimple/jenkins_jcasc:v4
+
+#sudo chown -R nginx:nginx /var/lib/docker/volumes/jenkins_data
+
 
 # Configure Nginx as a reverse proxy for Jenkins
 sudo bash -c 'cat <<EOT > /etc/nginx/conf.d/jenkins.conf

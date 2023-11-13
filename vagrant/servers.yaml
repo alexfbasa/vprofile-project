@@ -28,14 +28,14 @@
   hostname: "jenkins-nginx"
   ip: 172.17.8.153
   job: nginx
-  ram: 2048
+  ram: 1024
 
 - name: postgres
   box: centos/7
   hostname: "postgres.dev"
   ip: 172.17.8.100
   job: postgres
-  ram: 2048
+  ram: 1024
 - name: pgbackrestq
   box: centos/7
   hostname: "pgbackrest.dev"
@@ -53,4 +53,4 @@
   hostname: "grafana.dev"
   ip: 172.17.8.103
   job: grafana
-  ram: 4096
+  ram: 1024
