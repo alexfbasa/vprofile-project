@@ -42,9 +42,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                     sudo yum -y update >/dev/null 2>&1
                     echo "Installing go vim git wget unzip..."
                     sudo yum -y install go vim git wget unzip zip dnf net-tools >/dev/null 2>&1
-                    echo "Creating Ansible user -- devops with password 'dev0ps%$#'"
-                    sudo useradd -m -p $(echo 'dev0ps%$#' | openssl passwd -1 -stdin) devops
-                    sudo usermod -aG wheel devops
 
                     # Execute the copied script if it exists, else continue provisioning
                     if [ -f "/tmp/#{server['job']}.sh" ]; then
@@ -60,9 +57,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                     sudo apt-get update -y >/dev/null 2>&1
                     echo "Installing go vim git wget unzip..."
                     sudo apt-get -y install go vim git wget unzip net-tools >/dev/null 2>&1
-                    echo "Creating Ansible user -- devops with password 'dev0ps%$#'"
-                    sudo useradd -m -p $(echo 'dev0ps%$#' | openssl passwd -1 -stdin) devops
-                    sudo usermod -aG sudo devops
 
                     # Execute the copied script if it exists, else continue provisioning
                     if [ -f "/tmp/#{server['job']}.sh" ]; then
